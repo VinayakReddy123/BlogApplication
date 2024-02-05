@@ -99,6 +99,7 @@ const Login=({isUserAuthenticated})=>{
    }
    const loginUser=async ()=>{
       let response=await API.userLogin(login);
+      console.log(response);
       if(response.isSuccess){
          sessionStorage.setItem('accessToken',`Bearer ${response.data.accessToken}`);
          sessionStorage.setItem('refreshToken',`Bearer ${response.data.refreshToken}`);

@@ -31,9 +31,9 @@ const Categories=()=>{
                 <TableRow>
                     <TableCell>
                         <StyledLink to={'/'}>
-
-                        </StyledLink>
                         All Categories
+                        </StyledLink>
+                        
                     </TableCell>
                 </TableRow>
             </TableHead>

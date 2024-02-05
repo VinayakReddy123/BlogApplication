@@ -1,7 +1,11 @@
 import User from "../model/user.js";
+import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import token from "../model/token.js";
+
+dotenv.config();
+
 export const signupUser=async (req,res)=>{
     try{
        const salt=await bcrypt.genSalt();
@@ -29,8 +33,8 @@ export const loginUser=async (req,res)=>{
     try{
        let match=await bcrypt.compare(req.body.password,user.password);
        if(match){
-          const accessToken=jwt.sign(user.toJSON(),"huhmc9",{expiresIn:'15m'});
-          const refreshToken=jwt.sign(user.toJSON(),"husbhmc9");
+          const accessToken=jwt.sign(user.toJSON(),process.env.ACCESS_SECRET_KEY,{expiresIn:'15m'});
+          const refreshToken=jwt.sign(user.toJSON(), process.env.REFRESH_SECRET_KEY);
           const newToken=new token({token:refreshToken});
           newToken.save();
           return res.status(200).json({accessToken:accessToken,refreshToken:refreshToken,name:user.name,username:user.username});

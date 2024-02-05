@@ -1,5 +1,5 @@
 
-
+import Posts from "./post/Posts";
 import Banner from "../Banner/Banner";
 import Categories from "./Categories";
 import {Box,Grid,Typography,styled} from "@mui/material";
@@ -17,7 +17,7 @@ const Home=()=>{
               <Categories />
            </Grid>
            <Grid container item xs={12} sm={10} lg={10} >
-               Posts
+               <Posts />
            </Grid>
        </Grid>
        
