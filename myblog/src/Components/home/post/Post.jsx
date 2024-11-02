@@ -39,7 +39,7 @@ const Post=({post})=>{
             <Typography>{post.categories}</Typography>
             <Heading>{addElipsis(post.title,20)}</Heading>
             <Typography>{post.username}</Typography>
-            <Details>{addElipsis(post.description,100)}</Details>
+            <Details>{addElipsis(post.description,20)}</Details>
           </Container>
         </>
     )

@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import {API} from '../../../Service/api';
 import {Box,Grid} from '@mui/material';
 import {useSearchParams,Link} from "react-router-dom";
-
 import Post from "./Post";
+
 const Posts=()=>{
      const [posts,setPosts]=useState([]);
      const [searchParams]=useSearchParams();

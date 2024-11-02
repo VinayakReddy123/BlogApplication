@@ -20,7 +20,8 @@ export const signupUser=async (req,res)=>{
        const newuser=new User(user);
        await newuser.save();
        return res.status(200).json({msg:'signup succesful'});
-    }catch(err){
+    }catch(err){ 
+        console.log(err);
         res.status(500).json({msg:'Unable to Signup user'});
     }
 } 

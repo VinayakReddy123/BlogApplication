@@ -1,18 +1,19 @@
 import styled from "@emotion/styled";
 import { API } from "../../Service/api";
 
-import { Box ,TextField,Button} from "@mui/material";
+import { Box ,TextField,Button,Typography} from "@mui/material";
 import { useState,useContext } from "react";
 import { DataContext } from "../../context/DataProvider";
 import { useNavigate } from 'react-router-dom';
 
-// const Error=styled(Typography)`
-//      font-size:10px;
-//     color:#ff6161;
-//     line-height:10px;
-//     margin-top:10px;
-//     font-weight:600;
-// `
+// an
+const Error=styled(Typography)`
+     font-size:10px;
+    color:#ff6161;
+    line-height:10px;
+    margin-top:10px;
+    font-weight:600;
+`;
 
 const Component=styled(Box)`
     width:350px;
@@ -22,7 +23,7 @@ const Component=styled(Box)`
     align-items:center;
     margin: 20px auto;
     box-shadow:5px 2px 5px 2px rgba(0,0,0,0.6);
-`
+`;
 const Image=styled('img')({
     width:100,
     marginTop:30
@@ -66,9 +67,10 @@ const Login=({isUserAuthenticated})=>{
     const [state,setState]=useState('login'); // state for toggling login and signup page
     const [signup,setSignup]=useState(signUpInitialValues); // initial values for usercredentials(setting state for signup)
     const [login,setLogin]=useState(loginInitialValues); // setting state for login
-    // const [error,setError]=useState('');
+    const [error,setError]=useState('');  //an
     const {setAccount} =useContext(DataContext);
     const navigate=useNavigate(); //using as custom hook
+
    const toggleButton=()=>{
        if(state === 'login'){
           setState('signup');
@@ -86,30 +88,44 @@ const Login=({isUserAuthenticated})=>{
         [e.target.name]:e.target.value
       })
    }
-   const signupUser=async ()=>{
-      let response=await API.userSignup(signup);
-      if(response.isSuccess){
-        // setError('');
+   const signupUser = async () => {
+    try {
+      let response = await API.userSignup(signup);
+      if (response.isSuccess) {
+        setError('');
         setSignup(signUpInitialValues);
         toggleButton('login');
-      }else{
-        // setError('something went wrong ');
-        console.log("Something is wrong in signing up");
+      } else {
+        setError('Something went wrong. Please try again later.');
+        navigate('/login');
       }
-   }
-   const loginUser=async ()=>{
-      let response=await API.userLogin(login);
+    } catch (error) {
+      console.error('Please enter valid credentials:', error);
+      setError('Please enter valid credentials');
+      navigate('/login');
+    }
+  }
+  
+   const loginUser = async () => {
+    try {
+      let response = await API.userLogin(login);
       console.log(response);
-      if(response.isSuccess){
-         sessionStorage.setItem('accessToken',`Bearer ${response.data.accessToken}`);
-         sessionStorage.setItem('refreshToken',`Bearer ${response.data.refreshToken}`);
-         setAccount({username:response.data.username,name:response.data.name});
-         isUserAuthenticated(true);
-         navigate('/') ;
-      }else{
-        console.log("Something is wrong in signing up");
+      if (response.isSuccess) {
+        sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
+        sessionStorage.setItem('refreshToken', `Bearer ${response.data.refreshToken}`);
+        setAccount({ username: response.data.username, name: response.data.name });
+        isUserAuthenticated(true);
+        setError('');
+        navigate('/');
+      } else {
+        setError('Something went wrong. Please try again later.');
       }
-   }
+    } catch (error) {
+      console.error('Please enter valid credentials:', error);
+      setError('Please enter valid credentials');
+    }
+  }
+  
     return(
         <>    
          <Component>      
@@ -117,10 +133,11 @@ const Login=({isUserAuthenticated})=>{
           {state==='login' ? 
           <Wrapper>
             <TextField id="standard-basic" label="Username" onChange={(e)=>onValueChange(e)} name="username" variant="standard" />
-            <TextField id="standard-basic" label="password"  onChange={(e)=>onValueChange(e)} name="password" variant="standard" />
-            {/* {error && <Error>{error}</Error>} */}
+            <TextField id="standard-basic" label="password" type="password" onChange={(e)=>onValueChange(e)} name="password" variant="standard" />
+            {/* an */}
+            {error && <Error>{error}</Error>}
 
-            <LoginButton variant="contained" onClick={(e)=>loginUser()}>Login</LoginButton>
+            <LoginButton variant="contained" onClick={(e)=>loginUser(e)}>Login</LoginButton>
             <Para >OR </Para>
             <SignupButton onClick={()=>toggleButton()}>Create  Account</SignupButton>
           </Wrapper> 
@@ -128,12 +145,14 @@ const Login=({isUserAuthenticated})=>{
           <Wrapper>
             <TextField id="standard-basic" label="Enter name" name="name" onChange={(e)=>onInputChange(e)} variant="standard" />
             <TextField id="standard-basic" label="Enter username" name="username" onChange={(e)=>onInputChange(e)} variant="standard" />
-            <TextField id="standard-basic" label="Enterpassword" name="password" onChange={(e)=>onInputChange(e)} variant="standard" />
+            <TextField id="standard-basic" label="Enterpassword" name="password" type="password" onChange={(e)=>onInputChange(e)} variant="standard" />
             
-            {/* {error && <Error>{error}</Error>} */}
 
-            <SignupButton onClick={(e)=>signupUser()}>Signup</SignupButton>
-            <Para >OR </Para>
+            {/* added new */}
+            {error && <Error>{error}</Error>} 
+
+            <SignupButton onClick={(e)=>signupUser(e)}>Signup</SignupButton>
+            <Para>OR</Para>
             <LoginButton onClick={()=>toggleButton()}>Already have an Account</LoginButton>
           </Wrapper>
         }

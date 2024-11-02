@@ -10,7 +10,8 @@ import DetailView from './Components/details/DetailView';
 import Update from './Components/create/Update';
 import About from './Components/about/About';
 import Contact from './Components/contact/Contact';
-const PrivateRoute=({isAuthenticated, ...props})=>{
+
+const PrivateRoute=({isAuthenticated})=>{
    return isAuthenticated ? 
    <>
    <Header />
@@ -50,9 +51,6 @@ function App() {
            <Route path='/contact' element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
                 <Route path='/contact' element={<Contact />} />
            </Route>
- 
-
-          
         </Routes>    
       </div> 
       </BrowserRouter>   

@@ -2,8 +2,11 @@
 import Post from "../model/post.js";
 
 export const createPost=async (req,res)=>{
-    console.log("post saved succesfully");
+   
     try{
+      if (!req.body || !req.body.title || !req.body.description) {
+         return res.status(400).json({msg: "Title and content are required"});
+      }
        const post=await new Post(req.body);
        post.save();
        return res.status(200).json('Post saved succesfully');

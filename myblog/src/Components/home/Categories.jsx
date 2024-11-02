@@ -24,14 +24,14 @@ const Categories=()=>{
     return(
         <>
           <StyledLink to={`/create?category=${category || ''}`}>
-            <StyledButton variant="contained">Create Button</StyledButton>
+            <StyledButton variant="contained">Create Blog</StyledButton>
           </StyledLink>
           <StyledTable>
             <TableHead>
                 <TableRow>
                     <TableCell>
                         <StyledLink to={'/'}>
-                        All Categories
+                            <b>All Events</b>
                         </StyledLink>
                         
                     </TableCell>
